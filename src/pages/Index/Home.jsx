@@ -2,7 +2,7 @@ import React from 'react'
 import HeroHome from '@/Components/Index/HeroHome'
 
 import ServiceCard from "@/Components/Index/ServiceCard.jsx";
-import Categories from "@/Components/index/Categories.jsx";
+import Categories from "@/Components/Index/CategoriesIndex";
 import Anime from "@/Components/Index/Anime-Films/Anime.jsx";
 import Khmer from "@/Components/Index/KhmerLegend/khmer.jsx";
 import Feedbacks from "@/Components/Index/Feedback.jsx";
