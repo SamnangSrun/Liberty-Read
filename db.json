@@ -1,0 +1,341 @@
+{
+  "animeFilms": [
+    {
+      "id": 1,
+      "imageSrc": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx151807-yxY3olrjZH4k.png",
+      "title": "Solo Leveling",
+      "director": "Ore dake Level Up na Ken",
+      "genre": "Anime film"
+    },
+    {
+      "id": 2,
+      "imageSrc": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx184694-EmVoCuV4uAGv.png",
+      "title": "ReAwakening",
+      "director": "Hayao Miyazaki",
+      "genre": "Anime film"
+    },
+    {
+      "id": 3,
+      "imageSrc": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx105398-b673Vt5ZSuz3.jpg",
+      "title": "Na Honjaman Level Up",
+      "director": "Na Honjaman Level Up",
+      "genre": "Anime film"
+    },
+    {
+      "id": 4,
+      "imageSrc": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx176496-xCNtU4llsUpu.png",
+      "title": "Solo Leveling: Season 2",
+      "director": "Arise from the Shadow",
+      "genre": "Anime film"
+    },
+    {
+      "id": 5,
+      "imageSrc": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx177506-in4J0GNzjOZL.jpg",
+      "title": "Izure Saikyou no Renkinjutsushi?",
+      "director": "Hunters",
+      "genre": "Anime film"
+    },
+    {
+      "id": 6,
+      "imageSrc": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx176158-BtvSRyMHhPM0.jpg",
+      "title": "S-Rank Monster no Behemoth Dakedo",
+      "director": "Nobody asked to be a cat!",
+      "genre": "Anime film"
+    },
+    {
+      "id": 7,
+      "imageSrc": "https://jumpg-assets.tokyo-cdn.com/secure/title/100240/title_thumbnail_portrait_list/315466.jpg?hash=GYjUOeib72FQNyWRnNOimA&expires=2145884400",
+      "title": "Kill Blue",
+      "director": "Tadatoshi Fujimaki",
+      "genre": "Anime film"
+    },
+    {
+      "id": 8,
+      "imageSrc": "https://jumpg-assets.tokyo-cdn.com/secure/title/100282/title_thumbnail_portrait_list/319693.jpg?hash=O0h0CmpuRI8GRsMHlGYsKQ&expires=2145884400",
+      "title": "Dimensional Seduction",
+      "director": "Yu Hashimoto",
+      "genre": "Anime film"
+    },
+    {
+      "id": 9,
+      "imageSrc": "https://jumpg-assets.tokyo-cdn.com/secure/title/100396/title_thumbnail_portrait_list/385399.jpg?hash=1EfHgtCs6JFj6999I72lgg&expires=2145884400",
+      "title": "Second Home",
+      "director": "bieber",
+      "genre": "Anime film"
+    },
+    {
+      "id": 10,
+      "imageSrc": "https://jumpg-assets.tokyo-cdn.com/secure/title/100332/title_thumbnail_portrait_list/359644.jpg?hash=1GHCwWYbWvLfYDIe2rnGDQ&expires=2145884400",
+      "title": "Get Away, Matsumoto",
+      "director": "Tsuneharu Okusu",
+      "genre": "Anime film"
+    },
+    {
+      "id": 11,
+      "imageSrc": "https://jumpg-assets.tokyo-cdn.com/secure/title/100209/title_thumbnail_portrait_list/314143.jpg?hash=SSgWVg_nsspe8QHnLCjAQQ&expires=2145884400",
+      "title": "DRUNK BULLET",
+      "director": "Yanagi Takakuchi",
+      "genre": "Anime film"
+    },
+    {
+      "id": 12,
+      "imageSrc": "https://jumpg-assets.tokyo-cdn.com/secure/title/100315/title_thumbnail_portrait_list/345157.jpg?hash=AKeE4VwoHLLqkQndl30VfA&expires=2145884400",
+      "title": "Machi and Oboro",
+      "director": "Yuhra Ishito",
+      "genre": "Anime film"
+    },
+    {
+      "id": 13,
+      "imageSrc": "https://jumpg-assets.tokyo-cdn.com/secure/title/100291/title_thumbnail_portrait_list/347227.jpg?hash=MyTZ0XTBK7VibDs45zcIFg&expires=2145884400",
+      "title": "Girl meets Rock!",
+      "director": "Kuwahali / Tetsuo Ideuchi",
+      "genre": "Anime film"
+    },
+    {
+      "id": 14,
+      "imageSrc": "https://jumpg-assets.tokyo-cdn.com/secure/title/100352/title_thumbnail_portrait_list/385552.jpg?hash=dQsBV_zWY7DUviKsp7Idew&expires=2145884400",
+      "title": "Hero Organization",
+      "director": "Kei Saikawa / Akira Takahashi",
+      "genre": "Anime film"
+    },
+    {
+      "id": 15,
+      "imageSrc": "https://jumpg-assets.tokyo-cdn.com/secure/title/100127/title_thumbnail_portrait_list/313621.jpg?hash=0HpK9-UWS7urxNciRiGxQQ&expires=2145884400",
+      "title": "SAKAMOTO DAYS",
+      "director": "Yuto Suzuki",
+      "genre": "Anime film"
+    }
+  ],
+
+  "legends": [
+    {
+      "id": 1,
+      "imageSrc": "https://weteka.org/_next/image?url=https%3A%2F%2Fapi.weteka.org%2Fpublic%2Fbooks%2F660bb406b02e47aeaff184bb%2F0001.png&w=1080&q=75",
+      "title": "The Hare and The Snail",
+      "director": "សាលាឌីជីថល",
+      "genre": "Khmer legend"
+    },
+    {
+      "id": 2,
+      "imageSrc": "https://weteka.org/_next/image?url=https%3A%2F%2Fapi.weteka.org%2Fpublic%2Fbooks%2F660bb278b02e47aeaff184aa%2F0001.png&w=1080&q=75",
+      "title": "The Origin of the Dolphin",
+      "director": "សាលាឌីជីថល",
+      "genre": "Khmer legend"
+    },
+    {
+      "id": 3,
+      "imageSrc": "https://weteka.org/_next/image?url=https%3A%2F%2Fapi.weteka.org%2Fpublic%2Fbooks%2F660bb4a2b02e47aeaff184c0%2F0001.png&w=1080&q=75",
+      "title": "Ear, Mouth and Hands",
+      "director": "សាលាឌីជីថល",
+      "genre": "Khmer legend"
+    },
+    {
+      "id": 4,
+      "imageSrc": "https://weteka.org/_next/image?url=https%3A%2F%2Fapi.weteka.org%2Fpublic%2Fbooks%2F660badf0b02e47aeaff18462%2F0001.png&w=1080&q=75",
+      "title": "Duck and Frog",
+      "director": "សាលាឌីជីថល",
+      "genre": "Khmer legend"
+    },
+    {
+      "id": 5,
+      "imageSrc": "https://weteka.org/_next/image?url=https%3A%2F%2Fapi.weteka.org%2Fpublic%2Fbooks%2F660badc9b02e47aeaff18461%2F0001.png&w=1080&q=75",
+      "title": "Sonita's Life",
+      "director": "សាលាឌីជីថល",
+      "genre": "Khmer legend"
+    },
+    {
+      "id": 6,
+      "imageSrc": "https://weteka.org/_next/image?url=https%3A%2F%2Fapi.weteka.org%2Fpublic%2Fbooks%2F65e91f43a8a670a46fc01029%2F0001.png&w=1080&q=75",
+      "title": "Thun Chey Koma",
+      "director": "សាលាឌីជីថល",
+      "genre": "Khmer legend"
+    },
+    {
+      "id": 7,
+      "imageSrc": "https://weteka.org/_next/image?url=https%3A%2F%2Fapi.weteka.org%2Fpublic%2Fbooks%2F65e91d89a8a670a46fc0100a%2F0001.png&w=1080&q=75",
+      "title": "Chor Chitchea",
+      "director": "សាលាឌីជីថល",
+      "genre": "Khmer legend"
+    },
+    {
+      "id": 8,
+      "imageSrc": "https://weteka.org/_next/image?url=https%3A%2F%2Fapi.weteka.org%2Fpublic%2Fbooks%2F65e91f90a8a670a46fc0102c%2F0001.png&w=1080&q=75",
+      "title": "A Silly Rabbit",
+      "director": "សាលាឌីជីថល",
+      "genre": "Khmer legend"
+    },
+
+    {
+      "id": 1,
+      "imageSrc": "https://weteka.org/_next/image?url=https%3A%2F%2Fapi.weteka.org%2Fpublic%2Fbooks%2F660bad68b02e47aeaff1845f%2F0001.png&w=1080&q=75",
+      "title": "My wonderfull Pigs",
+      "director": "សាលាឌីជីថល",
+      "genre": "Khmer legend"
+    },
+    {
+      "id": 2,
+      "imageSrc": "https://weteka.org/_next/image?url=https%3A%2F%2Fapi.weteka.org%2Fpublic%2Fbooks%2F660bae34b02e47aeaff18464%2F0001.png&w=1080&q=75",
+      "title": "The Boss of Peanut",
+      "director": "សាលាឌីជីថល",
+      "genre": "Khmer legend"
+    },
+    {
+      "id": 3,
+      "imageSrc": "https://weteka.org/_next/image?url=https%3A%2F%2Fapi.weteka.org%2Fpublic%2Fbooks%2F660bb164b02e47aeaff1849b%2F0001.png&w=1080&q=75",
+      "title": "The Sons Heart",
+      "director": "សាលាឌីជីថល",
+      "genre": "Khmer legend"
+    },
+    {
+      "id": 4,
+      "imageSrc": "https://weteka.org/_next/image?url=https%3A%2F%2Fapi.weteka.org%2Fpublic%2Fbooks%2F65e92011a8a670a46fc01030%2F0001.png&w=1080&q=75",
+      "title": "Tamialai and Yiaymialia",
+      "director": "សាលាឌីជីថល",
+      "genre": "Khmer legend"
+    },
+    {
+      "id": 5,
+      "imageSrc": "https://weteka.org/_next/image?url=https%3A%2F%2Fapi.weteka.org%2Fpublic%2Fbooks%2F65e91f82a8a670a46fc0102b%2F0001.png&w=1080&q=75",
+      "title": "Angkor Wat Tamples",
+      "director": "សាលាឌីជីថល",
+      "genre": "Khmer legend"
+    },
+    {
+      "id": 6,
+      "imageSrc": "https://weteka.org/_next/image?url=https%3A%2F%2Fapi.weteka.org%2Fpublic%2Fbooks%2F65e91e12a8a670a46fc01014%2F0001.png&w=1080&q=75",
+      "title": "History of Phnom Sompov",
+      "director": "សាលាឌីជីថល",
+      "genre": "Khmer legend"
+    },
+    {
+      "id": 7,
+      "imageSrc": "https://books.scholarlibrary.com/web/image/product.product/17465/image_1024/%5BUTR%2026%5D%20%E1%9E%9A%E1%9E%BF%E1%9E%84%20%E1%9E%A2%E1%9F%92%E1%9E%93%E1%9E%80%E1%9E%87%E1%9E%B7%E1%9E%8F%E1%9E%81%E1%9E%B6%E1%9E%84?unique=3f87a69",
+      "title": "Neighbor",
+      "director": "Under The Roof",
+      "genre": "Khmer legend"
+    },
+    {
+      "id": 8,
+      "imageSrc": "https://books.scholarlibrary.com/web/image/product.template/18747/image_512/%5BUTR%2029%5D%20%E1%9E%8F%E1%9E%80%E1%9F%8B%20%E1%9E%93%E1%9E%B7%E1%9E%84%20%E1%9E%8F%E1%9E%B6%E1%9E%94%E1%9F%8B?unique=0296154",
+      "title": "Tork and Tab",
+      "director": "Under The Roof",
+      "genre": "Khmer legend"
+    }
+  ],
+
+  "novels": [
+    {
+      "id": 1,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1603387427i/53457092.jpg",
+      "title": "Six Crimson Cranes",
+      "director": "Elizabeth Lim",
+      "genre": "Novel book"
+    },
+    {
+      "id": 2,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1546870952i/42036538.jpg",
+      "title": "Gideon the Ninth",
+      "director": "Sue Lynn Tan",
+      "genre": "Novel book"
+    },
+    {
+      "id": 3,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1627686439i/57789637.jpg",
+      "title": "Daughter of the Moon Goddess",
+      "director": "Hayao Miyazaki",
+      "genre": "Novel book"
+    },
+    {
+      "id": 4,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1673157914i/75646557.jpg",
+      "title": "A Pirate's Life for Tea",
+      "director": "Rebecca Thorne",
+      "genre": "Novel book"
+    },
+    {
+      "id": 5,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1710540125i/52459864.jpg",
+      "title": "Iron Widow",
+      "director": "Xiran Jay Zhao",
+      "genre": "Novel book"
+    },
+    {
+      "id": 6,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1666660910i/52934483.jpg",
+      "title": "Heavenly Tyrant",
+      "director": "Silvia Moreno-Garcia",
+      "genre": "Novel book"
+    },
+    {
+      "id": 7,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1631517611i/48506393.jpg",
+      "title": "A Venom Dark and Sweet",
+      "director": "Judy I. Lin",
+      "genre": "Novel book"
+    },
+    {
+      "id": 8,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1659405649i/60461898.jpg",
+      "title": "Heart of the Sun Warrior",
+      "director": "Sue Lynn Tan",
+      "genre": "Novel book"
+    },
+
+    {
+      "id": 9,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1616788834i/56978100.jpg",
+      "title": "The Girl Who Fell Beneath the Sea",
+      "director": "Axie Oh",
+      "genre": "Novel book"
+    },
+    {
+      "id": 10,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1691262563i/180633984.jpg",
+      "title": "A Crane Among Wolves",
+      "director": "June Hur",
+      "genre": "Novel book"
+    },
+    {
+      "id": 11,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1693592112i/172979755.jpg",
+      "title": "Song of the Six Realms",
+      "director": "Judy I. Lin",
+      "genre": "Novel book"
+    },
+    {
+      "id": 12,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1705714476i/198563688.jpg",
+      "title": "The God and the Gumiho",
+      "director": "Sophie Kim",
+      "genre": "Novel book"
+    },
+    {
+      "id": 13,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1691225056i/174146852.jpg",
+      "title": "A Dark and Drowning Tide",
+      "director": "Allison Saft",
+      "genre": "Novel book"
+    },
+    {
+      "id": 14,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1693440479i/196726166.jpg",
+      "title": "The Honey Witch",
+      "director": "Sydney J. Shields",
+      "genre": "Novel book"
+    },
+    {
+      "id": 15,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1723282810i/199269577.jpg",
+      "title": "The Spellshop",
+      "director": "Sarah Beth Durst",
+      "genre": "Novel book"
+    },
+    {
+      "id": 16,
+      "imageSrc": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1710771695i/207611551.jpg",
+      "title": "The Teller of Small Fortunes",
+      "director": "Julie Leong",
+      "genre": "Novel book"
+    }
+  ]
+}

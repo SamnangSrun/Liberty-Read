@@ -1,0 +1,12 @@
+1         User roles: Admin, Seller, Customer.                  --
+2.        Login and register: email and password, social login 
+3.        Recive notification login, order, successfully        
+4.        Admin Manage users (approve or remove sellers).
+5.        Customer can update account to become seller.
+6.        Manage book listings (approve, edit, or remove books).
+8.        Manage their book inventory (edit, delete).
+9.        Browse books by category.
+10.       Leave comment on order books.
+11.       Search and filter books by category and name books.
+12.       Add books to cart and proceed with checkout.
+13.       Payment options (cash on delivery, online payment integration).
