@@ -1,10 +1,10 @@
-import HeroHome from "@/components/index/HeroHome";
-import ServiceCard from "@/components/index/ServiceCard.jsx";
-import Categories from "@/components/index/Categories.jsx";
-import Anime from "@/components/index/Anime-Films/Anime.jsx";
-import Khmer from "@/components/index/KhmerLegend/khmer.jsx";
-import Feedbacks from "@/components/index/Feedback.jsx";
-import Questions from "@/components/index/Questions.jsx";
+import HeroHome from "@/components/Index/HeroHome";
+import ServiceCard from "@/components/Index/ServiceCard.jsx";
+import Categories from "@/components/Index/Categories.jsx";
+import Anime from "@/components/Index/Anime-Films/Anime.jsx";
+import Khmer from "@/components/Index/KhmerLegend/khmer.jsx";
+import Feedbacks from "@/components/Index/Feedback.jsx";
+import Questions from "@/components/Index/Questions.jsx";
 
 const Home = () => {
   return (
