@@ -1,5 +1,5 @@
-import React from 'react';
-import BookImage from '../../Img/Index/Hero/book.png'; 
+import BookImage from '@/Img/Index/Hero/book.png';
+// import BookImage from '../../Img/Index/Hero/book.png'; 
 
 const HeroHome = () => {
   return (
