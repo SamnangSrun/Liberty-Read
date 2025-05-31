@@ -1,4 +1,4 @@
-import Hero from "@/Components/Index/Hero.jsx";
+import Hero from "@/Components/Index/HeroApp";
 import ServiceCard from "@/Components/Index/ServiceCard.jsx";
 import Categories from "@/Components/Index/Categories.jsx";
 import Anime from "@/Components/Index/Anime-Films/Anime.jsx";
