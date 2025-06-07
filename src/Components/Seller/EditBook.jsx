@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { request } from '../../utils/request';
 import { useNavigate, useParams } from 'react-router-dom';
 import { profileStore } from '../../store/Pfile_store';
+import { config } from "../../utils/config";
 
 const EditBook = () => {
     const { id } = useParams();
@@ -18,6 +19,7 @@ const EditBook = () => {
         description: '',
         category_name: '',
         price: '',
+        stock: 0
     });
     const [initialFormData, setInitialFormData] = useState(null);
     const [categories, setCategories] = useState([]);
@@ -67,6 +69,7 @@ const EditBook = () => {
                     description: bookData.description || '',
                     category_name: bookData.category?.name || '',
                     price: bookData.price || '',
+                    stock: bookData.stock || 0
                 };
 
                 setFormData(initialData);
@@ -76,7 +79,7 @@ const EditBook = () => {
                 if (bookData.cover_image) {
                     const coverUrl = bookData.cover_image.startsWith('http') 
                         ? bookData.cover_image 
-                        : `http://127.0.0.1:8000/storage/${bookData.cover_image}`;
+                        : `${config.book_image_path}${bookData.cover_image}`;
                     setCurrentCover(bookData.cover_image);
                     setImage(coverUrl);
                 }
@@ -96,14 +99,12 @@ const EditBook = () => {
         const file = event.target.files[0];
         if (!file) return;
 
-        // Validate image type
         const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
         if (!validTypes.includes(file.type)) {
             toast.error('Please upload a valid image (JPEG, PNG, GIF)');
             return;
         }
 
-        // Validate image size
         if (file.size > 2 * 1024 * 1024) {
             toast.error('Image size should be less than 2MB');
             return;
@@ -121,7 +122,7 @@ const EditBook = () => {
             ...prev,
             [name]: value,
         }));
-        // Clear error when field is edited
+        
         if (errors[name]) {
             setErrors(prev => ({ ...prev, [name]: '' }));
         }
@@ -154,6 +155,11 @@ const EditBook = () => {
             isValid = false;
         }
 
+        if (!formData.stock || isNaN(formData.stock) || parseInt(formData.stock) < 0) {
+            newErrors.stock = 'Valid stock quantity is required';
+            isValid = false;
+        }
+
         setErrors(newErrors);
         return isValid;
     };
@@ -169,12 +175,13 @@ const EditBook = () => {
 
         try {
             const data = new FormData();
-            data.append('_method', 'PUT'); // For Laravel to handle as PUT request
+            data.append('_method', 'PUT');
             data.append('name', formData.name);
             data.append('author', formData.author);
             data.append('description', formData.description);
             data.append('category_name', formData.category_name);
             data.append('price', formData.price);
+            data.append('stock', formData.stock);
             
             if (imageFile) {
                 data.append('cover_image', imageFile);
@@ -222,21 +229,17 @@ const EditBook = () => {
         <div className="max-w-6xl mx-auto p-6">
             <ToastContainer position="top-right" autoClose={3000} />
             
-            {/* Header Section */}
             <div className="mb-8">
                 <h2 className="text-3xl font-bold text-gray-800">Edit Book</h2>
                 <p className="text-gray-600 mt-2">Update your book details and cover image</p>
             </div>
             
-            {/* Main Form Card */}
             <div className="bg-white rounded-xl shadow-lg overflow-hidden">
                 <div className="flex flex-col md:flex-row">
-                    {/* Cover Image Section - Now with a more modern look */}
                     <div className="w-full md:w-1/3 bg-gray-50 p-8 border-b md:border-b-0 md:border-r border-gray-200">
                         <div className="flex flex-col items-center">
                             <h3 className="text-lg font-semibold text-gray-700 mb-6">Book Cover</h3>
                             
-                            {/* Image Upload Area */}
                             <div className="relative w-56 h-72 rounded-lg overflow-hidden shadow-md border-2 border-dashed border-gray-300 hover:border-indigo-400 transition-all duration-200">
                                 <img 
                                     src={image || uploadf} 
@@ -248,7 +251,6 @@ const EditBook = () => {
                                     }}
                                 />
                                 
-                                {/* Upload Overlay */}
                                 <label 
                                     htmlFor="upload"
                                     className={`absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-200 cursor-pointer ${
@@ -275,7 +277,6 @@ const EditBook = () => {
                                 />
                             </div>
                             
-                            {/* Image Actions */}
                             <div className="mt-6 flex space-x-3">
                                 <label 
                                     htmlFor="upload" 
@@ -311,11 +312,9 @@ const EditBook = () => {
                         </div>
                     </div>
                     
-                    {/* Form Section - Enhanced layout */}
                     <div className="w-full md:w-2/3 p-8">
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="grid grid-cols-1 gap-6">
-                                {/* Book Title */}
                                 <div>
                                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                                         Book Title
@@ -337,7 +336,6 @@ const EditBook = () => {
                                     />
                                 </div>
                                 
-                                {/* Author */}
                                 <div>
                                     <label htmlFor="author" className="block text-sm font-medium text-gray-700 mb-1">
                                         Author
@@ -359,7 +357,6 @@ const EditBook = () => {
                                     />
                                 </div>
                                 
-                                {/* Description */}
                                 <div>
                                     <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
                                         Book Description
@@ -376,8 +373,7 @@ const EditBook = () => {
                                     />
                                 </div>
                                 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {/* Category */}
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div>
                                         <label htmlFor="category_name" className="block text-sm font-medium text-gray-700 mb-1">
                                             Category
@@ -404,7 +400,6 @@ const EditBook = () => {
                                         </select>
                                     </div>
                                     
-                                    {/* Price */}
                                     <div>
                                         <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
                                             Price
@@ -432,10 +427,32 @@ const EditBook = () => {
                                             />
                                         </div>
                                     </div>
+
+                                    <div>
+                                        <label htmlFor="stock" className="block text-sm font-medium text-gray-700 mb-1">
+                                            Stock
+                                            <span className="text-red-500 ml-1">*</span>
+                                            {errors.stock && <span className="text-red-600 text-xs ml-2">{errors.stock}</span>}
+                                        </label>
+                                        <input
+                                            type="number"
+                                            id="stock"
+                                            name="stock"
+                                            value={formData.stock}
+                                            onChange={handleChange}
+                                            min="0"
+                                            step="1"
+                                            className={`w-full px-4 py-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                                                errors.stock ? 'border-red-500' : 'border-gray-300 hover:border-gray-400'
+                                            } transition-colors duration-200`}
+                                            placeholder="Enter stock quantity"
+                                            required
+                                            disabled={isSubmitting}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             
-                            {/* Form Actions - Sticky at bottom on larger screens */}
                             <div className="pt-6 border-t border-gray-200 sticky bottom-0 bg-white pb-2">
                                 <div className="flex justify-end space-x-3">
                                     <button

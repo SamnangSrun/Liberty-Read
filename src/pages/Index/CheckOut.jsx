@@ -196,6 +196,7 @@ const Checkout = () => {
   if (paymentSuccess && paymentDetails) {
     return (
       <div className="max-w-2xl mx-auto p-6 text-center">
+        
         <div className="mb-6 text-green-500">
           <FaCheckCircle className="w-16 h-16 mx-auto" />
         </div>
@@ -288,6 +289,7 @@ const Checkout = () => {
             </div>
           </div>
         </div>
+         
 
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <button
@@ -310,7 +312,7 @@ const Checkout = () => {
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-6">
       <h1 className="text-3xl font-bold mb-6">Complete Payment</h1>
-
+           
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Payment Details Form */}
         <div className="lg:w-2/3">

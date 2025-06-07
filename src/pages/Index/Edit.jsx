@@ -96,14 +96,8 @@ const EditProfileForm = () => {
       return;
     }
 
-    if (!name.trim() || !email.trim()) {
-      toast.error("Name and email are required");
-      setIsSubmitting(false);
-      return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      toast.error("Please enter a valid email address");
+    if (!name.trim()) {
+      toast.error("Name is required");
       setIsSubmitting(false);
       return;
     }
@@ -111,7 +105,6 @@ const EditProfileForm = () => {
     try {
       const formData = new FormData();
       formData.append("name", name);
-      formData.append("email", email);
       
       if (imageFile) {
         formData.append("profile_image", imageFile);
@@ -258,12 +251,13 @@ const EditProfileForm = () => {
                   type="email"
                   id="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  readOnly
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 cursor-not-allowed"
                   placeholder="Email"
-                  required
-                  disabled={isSubmitting}
                 />
+                <p className="mt-1 text-sm text-gray-500">
+                  Email address cannot be changed. Please contact support if you need to update your email.
+                </p>
               </div>
 
               <div className="flex justify-end gap-4 pt-4">
@@ -271,7 +265,6 @@ const EditProfileForm = () => {
                   type="button"
                   onClick={() => {
                     setName(user?.name || "");
-                    setEmail(user?.email || "");
                     setPreview(
                       user?.profile_image
                         ? config.profile_image_path + user.profile_image

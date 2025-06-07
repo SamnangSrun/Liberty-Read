@@ -87,7 +87,7 @@ export function NavbarComponents() {
       setCartItemsCount(items.reduce((total, item) => total + (item.quantity || 0), 0));
     } catch (error) {
       console.error('Error fetching cart items:', error);
-      // toast.error(`Failed to load cart: ${error.message || 'Unknown error'}`);
+      toast.error('Failed to load cart items');
     } finally {
       setCartLoading(false);
     }
@@ -95,12 +95,21 @@ export function NavbarComponents() {
 
   const handleQuantityChange = async (itemId, change) => {
     try {
-      setUpdatingItems(prev => ({ ...prev, [itemId]: true }));
-      
       const currentItem = cartItems.find(item => item.id === itemId);
       if (!currentItem) return;
       
-      const newQuantity = Math.max(1, currentItem.quantity + change);
+      const newQuantity = currentItem.quantity + change;
+      
+      // Validate new quantity
+      if (newQuantity < 1) return;
+      
+      // Check stock availability
+      if (newQuantity > currentItem.book.stock) {
+        toast.error(`Only ${currentItem.book.stock} items available in stock`);
+        return;
+      }
+
+      setUpdatingItems(prev => ({ ...prev, [itemId]: true }));
       
       // Optimistic update
       setCartItems(prevItems => 
@@ -166,6 +175,13 @@ export function NavbarComponents() {
   const handleProceedToCheckout = async (e) => {
     e.preventDefault();
     if (cartLoading || cartItems.length === 0) return;
+
+    // Check stock availability before proceeding to checkout
+    const outOfStockItems = cartItems.filter(item => item.quantity > item.book.stock);
+    if (outOfStockItems.length > 0) {
+      toast.error(`Some items in your cart exceed available stock`);
+      return;
+    }
 
     try {
       setCartLoading(true);
@@ -342,7 +358,7 @@ export function NavbarComponents() {
                 </button>
 
                 {cartDropdownOpen && (
-                  <div className="absolute  left-1/2 -translate-x-1/2 sm:translate-x-0 mt-2 w-80 bg-white shadow-xl right-0 sm:right-0 sm:left-auto rounded-lg z-50 border border-gray-100">
+                  <div className="absolute left-1/2 -translate-x-1/2 sm:translate-x-0 mt-2 w-80 bg-white shadow-xl right-0 sm:right-0 sm:left-auto rounded-lg z-50 border border-gray-100">
                     <div className="p-4 border-b border-gray-100 flex justify-between items-center">
                       <h3 className="font-semibold text-gray-900">Your Cart ({cartItemsCount})</h3>
                       <div className="flex items-center gap-2">
@@ -396,6 +412,9 @@ export function NavbarComponents() {
                               <div className="flex-1 min-w-0">
                                 <h3 className="font-medium text-sm truncate">{item.book.name}</h3>
                                 <p className="text-gray-600 text-xs truncate">{item.book.author}</p>
+                                <p className="text-xs text-gray-500 mt-1">
+                                  Stock: {item.book.stock}
+                                </p>
                                 <div className="flex justify-between items-center mt-2">
                                   <span className="font-bold text-[#102249] text-sm">
                                     ${(parseFloat(item.price) * item.quantity).toFixed(2)}
@@ -425,12 +444,13 @@ export function NavbarComponents() {
                                     
                                     <button 
                                       onClick={() => handleQuantityChange(item.id, 1)}
-                                      disabled={updatingItems[item.id]}
+                                      disabled={updatingItems[item.id] || item.quantity >= item.book.stock}
                                       className={`w-6 h-6 flex items-center justify-center border rounded-full ${
-                                        updatingItems[item.id] 
+                                        updatingItems[item.id] || item.quantity >= item.book.stock
                                           ? 'opacity-50 cursor-not-allowed' 
                                           : 'hover:bg-gray-100'
                                       }`}
+                                      title={item.quantity >= item.book.stock ? 'Maximum quantity reached' : ''}
                                     >
                                       {updatingItems[item.id] ? (
                                         <FaSpinner className="animate-spin text-xs" />

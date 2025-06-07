@@ -15,6 +15,7 @@ const BookDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('details');
   const [addingToCart, setAddingToCart] = useState(false);
+  const [outOfStock, setOutOfStock] = useState(false);
 
   useEffect(() => {
     const fetchBookDetails = async () => {
@@ -25,6 +26,11 @@ const BookDetail = () => {
           throw new Error('Book not found');
         }
         setBook(response.book);
+        // Check stock status when book data is loaded
+        if (response.book.stock <= 0) {
+          setOutOfStock(true);
+          setQuantity(0); // Set quantity to 0 if out of stock
+        }
       } catch (error) {
         console.error('Error fetching book:', error);
         toast.error('Failed to load book details. Please try again.');
@@ -37,7 +43,15 @@ const BookDetail = () => {
   }, [id]);
 
   const handleQuantityChange = (change) => {
-    setQuantity((prev) => Math.max(1, prev + change));
+    if (outOfStock) return; // Don't allow quantity changes if out of stock
+    
+    const newQuantity = Math.max(1, quantity + change);
+    // Ensure we don't exceed available stock
+    if (book && newQuantity > book.stock) {
+      toast.warning(`Only ${book.stock} items available`);
+      return;
+    }
+    setQuantity(newQuantity);
   };
 
   const handleTabChange = (tab) => {
@@ -45,6 +59,11 @@ const BookDetail = () => {
   };
 
   const handleAddToCart = async () => {
+    if (outOfStock) {
+      toast.error("This book is currently out of stock");
+      return;
+    }
+
     const token = profileStore.getState().access_token;
 
     if (!token) {
@@ -106,7 +125,7 @@ const BookDetail = () => {
       <div className="p-4 md:p-6 mt-6 lg:ml-40 lg:mr-40 md:mt-10 flex flex-col md:flex-row gap-8">
         {/* Book Info */}
         <div className="flex flex-col w-full md:w-[500px]">
-                    <div className="text-gray-600 mb-2">
+          <div className="text-gray-600 mb-2">
             <Link to="/books" className="hover:underline">books</Link> &gt;{' '}
             <Link
               to={`/categories/${book.category?.name?.toLowerCase() || 'unknown'}`}
@@ -116,13 +135,12 @@ const BookDetail = () => {
             </Link>
           </div>
 
-
           <h1 className="text-2xl md:text-3xl font-bold mb-2">{book.name}</h1>
-          <span className="text-lg md:text-xl font-bold mb-4 block">${parseFloat(book.price).toFixed(2)}</span>
+          
 
           {/* Tabs */}
           <div className="flex mb-4 overflow-x-auto">
-            {['details', 'shipping', 'returns'].map((tab) => (
+            {['details', 'shipping', 'returns','stock'].map((tab) => (
               <button
                 key={tab}
                 type="button"
@@ -149,11 +167,21 @@ const BookDetail = () => {
                 items, timeframes, and conditions for returns.
               </p>
             )}
+           {activeTab === 'stock' && (
+  <div className="flex items-center justify-between mb-4">
+    {book.stock > 0 ? (
+      <span className="text-green-600">Only {parseFloat(book.stock)} left !</span>
+    ) : (
+      <span className="text-sm text-red-600">Out of Stock</span>
+    )}
+  </div>
+)}
+
           </div>
         </div>
 
         {/* Book Cover */}
-        <div className="flex justify-center lg:mr-14 ">
+        <div className="flex justify-center lg:mr-14">
           <img
             src={book.cover_image.startsWith('http') ? book.cover_image : `${config.book_image_path}${book.cover_image}`}
             alt={`${book.name} book cover`}
@@ -167,48 +195,64 @@ const BookDetail = () => {
 
         {/* Cart Interaction */}
         <div className="flex flex-col w-full md:w-72">
-          <div className="flex items-center mb-4">
-            <span className="font-semibold mr-2">Quantity:</span>
+          {!outOfStock && (
+            <div className="flex items-center mb-4">
+              <span className="font-semibold mr-2">Quantity:</span>
+              <button
+                type="button"
+                onClick={() => handleQuantityChange(-1)}
+                disabled={quantity <= 1}
+                className="border px-2 py-1 disabled:opacity-50"
+              >
+                -
+              </button>
+              <span className="mx-3">{quantity}</span>
+              <button
+                type="button"
+                onClick={() => handleQuantityChange(1)}
+                disabled={quantity >= book.stock}
+                className="border px-2 py-1 disabled:opacity-50"
+              >
+                +
+              </button>
+            </div>
+          )}
+
+          {!outOfStock && (
+            <span className="font-semibold mb-4">Total: ${totalPrice.toFixed(2)}</span>
+          )}
+
+          {outOfStock ? (
             <button
-              type="button"
-              onClick={() => handleQuantityChange(-1)}
-              disabled={quantity <= 1}
-              className="border px-2 py-1"
+              className="bg-gray-400  text-white px-4 py-2 w-full mb-3 cursor-not-allowed"
+              disabled
             >
-              -
+              Out of Stock
             </button>
-            <span className="mx-3">{quantity}</span>
-            <button
-              type="button"
-              onClick={() => handleQuantityChange(1)}
-              className="border px-2 py-1"
-            >
-              +
-            </button>
-          </div>
+          ) : (
+            <>
+              <button
+                onClick={handleAddToCart}
+                className="bg-[#102249] text-white px-4 py-2 hover:bg-[#102259] transition w-full mb-3"
+                type="button"
+                disabled={addingToCart}
+              >
+                {addingToCart ? "Adding..." : "Add to Cart"}
+              </button>
 
-          <span className="font-semibold mb-4">Total: ${totalPrice.toFixed(2)}</span>
-
-          <button
-            onClick={handleAddToCart}
-            className="bg-[#102249] text-white px-4 py-2 hover:bg-[#102259] transition w-full mb-3"
-            type="button"
-            disabled={addingToCart}
-          >
-            {addingToCart ? "Adding..." : "Add to Cart"}
-          </button>
-
-          <button
-            onClick={async () => {
-              await handleAddToCart();
-              navigate("/checkout");
-            }}
-            className="border border-black text-black px-4 py-2 hover:bg-[#102249] hover:text-white transition w-full"
-            type="button"
-            disabled={addingToCart}
-          >
-            Buy Now
-          </button>
+              <button
+                onClick={async () => {
+                  await handleAddToCart();
+                  navigate("/checkout");
+                }}
+                className="border border-black text-black px-4 py-2 hover:bg-[#102249] hover:text-white transition w-full"
+                type="button"
+                disabled={addingToCart}
+              >
+                Buy Now
+              </button>
+            </>
+          )}
         </div>
       </div>
 

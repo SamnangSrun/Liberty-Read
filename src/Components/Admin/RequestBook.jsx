@@ -171,6 +171,7 @@ const RequestSellerTable = () => {
               <th className="px-6 py-3">Category</th>
               <th className="px-6 py-3">Author</th>
               <th className="px-6 py-3">Price</th>
+              <th className="px-6 py-3">stock</th>
               <th className="px-6 py-3">Description</th>
               <th className="px-6 py-3">Status</th>
               <th className="px-6 py-3 text-right">Actions</th>
@@ -204,6 +205,7 @@ const RequestSellerTable = () => {
                   <td className="px-6 py-4 text-sm text-gray-500">{req.category?.name || '-'}</td>
                   <td className="px-6 py-4 text-sm text-gray-500">{req.author || '-'}</td>
                   <td className="px-6 py-4 text-sm text-gray-500">{req.price || '-'}</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">{req.stock || '-'}</td>
                   <td className="px-6 py-4 text-sm text-gray-500">{req.description || '-'}</td>
                   <td className="px-6 py-4">
                     <span

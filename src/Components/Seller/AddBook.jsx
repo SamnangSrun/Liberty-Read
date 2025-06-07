@@ -15,29 +15,30 @@ const AddBookForm = () => {
         author: '',
         description: '', // Changed from 'details' to match backend
         category_name: '',
-        price: ''
+        price: '',
+        stock: '' // Added stock field with default value 10
     });
     const [categories, setCategories] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isLoadingCategories, setIsLoadingCategories] = useState(true);
 
-   useEffect(() => {
-    const fetchCategories = async () => {
-        try {
-            const response = await fetch(`${config.base_url_api}categories`);
-            if (!response.ok) throw new Error('Failed to fetch categories');
-            const data = await response.json();
-            setCategories(data.categories || data.data || data); // adjust based on your API response
-        } catch (error) {
-            console.error('Error fetching categories:', error);
-            toast.error('Failed to load categories. Please try again later.');
-        } finally {
-            setIsLoadingCategories(false);
-        }
-    };
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch(`${config.base_url_api}categories`);
+                if (!response.ok) throw new Error('Failed to fetch categories');
+                const data = await response.json();
+                setCategories(data.categories || data.data || data); // adjust based on your API response
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+                toast.error('Failed to load categories. Please try again later.');
+            } finally {
+                setIsLoadingCategories(false);
+            }
+        };
 
-    fetchCategories();
-}, []);
+        fetchCategories();
+    }, []);
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -71,7 +72,7 @@ const AddBookForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if (!formData.name || !formData.author || !formData.category_name || !formData.price) {
+        if (!formData.name || !formData.author || !formData.category_name || !formData.price || !formData.stock) {
             toast.error('Please fill in all required fields');
             return;
         }
@@ -81,15 +82,21 @@ const AddBookForm = () => {
             return;
         }
 
+        if (isNaN(formData.stock) || parseInt(formData.stock) < 0) {
+            toast.error('Please enter a valid stock quantity');
+            return;
+        }
+
         setIsSubmitting(true);
 
         try {
             const data = new FormData();
             data.append('name', formData.name);
             data.append('author', formData.author);
-            data.append('description', formData.description); // Changed to match backend
+            data.append('description', formData.description);
             data.append('category_name', formData.category_name);
             data.append('price', formData.price);
+            data.append('stock', formData.stock);
             
             if (imageFile) {
                 data.append('cover_image', imageFile);
@@ -109,7 +116,8 @@ const AddBookForm = () => {
                 author: '',
                 description: '',
                 category_name: '',
-                price: ''
+                price: '',
+                stock: ''
             });
             setImage(null);
             setImageFile(null);
@@ -206,7 +214,7 @@ const AddBookForm = () => {
                                 />
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div>
                                     <label htmlFor="category_name" className="block text-sm font-medium mb-1">Category *</label>
                                     <select
@@ -245,6 +253,23 @@ const AddBookForm = () => {
                                             disabled={isSubmitting}
                                         />
                                     </div>
+                                </div>
+
+                                <div>
+                                    <label htmlFor="stock" className="block text-sm font-medium mb-1">Stock *</label>
+                                    <input
+                                        type="number"
+                                        id="stock"
+                                        name="stock"
+                                        value={formData.stock}
+                                        onChange={handleChange}
+                                        min="0"
+                                        step="1"
+                                        className="w-full px-3 py-2 border border-black rounded focus:outline-none focus:ring-1 focus:ring-black"
+                                        placeholder="Enter stock quantity"
+                                        required
+                                        disabled={isSubmitting}
+                                    />
                                 </div>
                             </div>
                         </div>
