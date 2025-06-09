@@ -3,8 +3,8 @@ import uploadf from "../../Img/Admin/upload.png";
 import { request } from "../../utils/request";
 import { profileStore } from "../../store/Pfile_store";
 import { config } from "../../utils/config";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditProfileForm = () => {
   const { user, funSetUser, funSetProfileImage } = profileStore();
@@ -20,12 +20,10 @@ const EditProfileForm = () => {
       setName(user.name || "");
       setEmail(user.email || "");
       setPreview(
-        user.profile_image
-          ? config.profile_image_path + user.profile_image
+        user.profile_image 
+          ? config.profile_image_path + user.profile_image 
           : null
       );
-      setImageFile(null);
-      setShowDeleteConfirm(false);
     }
   }, [user]);
 
@@ -37,19 +35,17 @@ const EditProfileForm = () => {
         toast.error("Please upload a valid image (JPEG, PNG, GIF)");
         return;
       }
-
+      
       if (file.size > 2 * 1024 * 1024) {
         toast.error("Image size should be less than 2MB");
         return;
       }
-
+      
       setImageFile(file);
-
       const reader = new FileReader();
       reader.onloadend = () => setPreview(reader.result);
       reader.readAsDataURL(file);
-
-      setShowDeleteConfirm(false); // uploading new image cancels delete confirm
+      setShowDeleteConfirm(false);
     }
   };
 
@@ -60,17 +56,17 @@ const EditProfileForm = () => {
     }
 
     setIsSubmitting(true);
-
     try {
-      const response = await request(
-        `users/${user.id}/remove-profile-image`,
-        "delete"
-      );
-
-      const updatedUser = response?.data?.user || response?.user;
-
-      if (updatedUser) {
-        funSetUser(updatedUser);
+      const response = await request(`users/${user.id}/remove-profile-image`, "delete");
+      
+      if (response?.data?.user) {
+        funSetUser(response.data.user);
+        funSetProfileImage(null);
+        setPreview(null);
+        setImageFile(null);
+        toast.success("Profile image removed successfully");
+      } else if (response?.user) {
+        funSetUser(response.user);
         funSetProfileImage(null);
         setPreview(null);
         setImageFile(null);
@@ -109,12 +105,11 @@ const EditProfileForm = () => {
     try {
       const formData = new FormData();
       formData.append("name", name);
-
+      
       if (imageFile) {
         formData.append("profile_image", imageFile);
       }
-
-      // Remove profile image if delete confirmed and no new image uploaded
+      
       if (showDeleteConfirm && !imageFile) {
         formData.append("remove_profile_image", "true");
       }
@@ -124,17 +119,16 @@ const EditProfileForm = () => {
       const response = await request(`users/${user.id}`, "post", formData);
 
       const updatedUser = response?.data?.user || response?.user;
-
       if (updatedUser) {
         toast.success("Profile updated successfully");
         funSetUser(updatedUser);
         funSetProfileImage(updatedUser.profile_image || null);
         setImageFile(null);
         setShowDeleteConfirm(false);
-
+        
         setPreview(
-          updatedUser.profile_image
-            ? config.profile_image_path + updatedUser.profile_image
+          updatedUser.profile_image 
+            ? config.profile_image_path + updatedUser.profile_image 
             : null
         );
       } else {
@@ -151,26 +145,17 @@ const EditProfileForm = () => {
     }
   };
 
-  const handleReset = () => {
-    setName(user?.name || "");
-    setPreview(
-      user?.profile_image ? config.profile_image_path + user.profile_image : null
-    );
-    setImageFile(null);
-    setShowDeleteConfirm(false);
-  };
-
   return (
     <div className="max-w-6xl mx-auto p-6">
       <ToastContainer position="top-right" autoClose={3000} />
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Edit Profile</h2>
-
+      
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Profile Picture Section */}
           <div className="w-full md:w-1/3 flex flex-col items-center">
             <h3 className="text-lg font-medium text-gray-700 mb-4">Profile Photo</h3>
-
+            
             <div className="relative group">
               <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-gray-200 shadow-md">
                 <img
@@ -179,37 +164,24 @@ const EditProfileForm = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-
-              {preview && (
+              
+              {(preview && preview !== uploadf) && (
                 <button
                   onClick={() => setShowDeleteConfirm(true)}
                   className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-600 transition-colors"
                   disabled={isSubmitting}
                   title="Remove photo"
-                  aria-label="Remove photo"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                 </button>
               )}
             </div>
-
+            
             {showDeleteConfirm ? (
               <div className="mt-4 flex flex-col items-center gap-2">
-                <p className="text-sm text-gray-600 mb-2">
-                  Are you sure you want to delete this photo?
-                </p>
+                <p className="text-sm text-gray-600 mb-2">Are you sure you want to delete this photo?</p>
                 <div className="flex gap-2">
                   <button
                     onClick={handleDeleteImage}
@@ -231,7 +203,7 @@ const EditProfileForm = () => {
               <div className="mt-4 text-center">
                 <input
                   type="file"
-                  accept="image/jpeg,image/png,image/gif"
+                  accept="image/*"
                   onChange={handleImageUpload}
                   className="hidden"
                   id="upload"
@@ -243,106 +215,87 @@ const EditProfileForm = () => {
                     isSubmitting ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                   }`}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 mr-2 text-gray-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0l-4 4m4-4v12"
-                    />
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
-                  Upload a photo
+                  {preview && preview !== uploadf ? "Change photo" : "Upload photo"}
                 </label>
               </div>
             )}
           </div>
 
-          {/* User Details Form */}
-          <form onSubmit={handleSubmit} className="flex-1">
-            <div className="mb-4">
-              <label htmlFor="name" className="block font-semibold mb-1">
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                disabled={isSubmitting}
-                maxLength={50}
-                required
-              />
-            </div>
+          {/* Form Section */}
+          <div className="w-full md:w-2/3">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="Your Name"
+                  required
+                  disabled={isSubmitting}
+                />
+              </div>
 
-            <div className="mb-6">
-              <label htmlFor="email" className="block font-semibold mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 cursor-not-allowed"
-                value={email}
-                readOnly
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                Email cannot be changed.
-              </p>
-            </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  readOnly
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 cursor-not-allowed"
+                  placeholder="Email"
+                />
+                <p className="mt-1 text-sm text-gray-500">
+                  Email address cannot be changed. Please contact support if you need to update your email.
+                </p>
+              </div>
 
-            <div className="flex gap-4">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 disabled:opacity-50"
-              >
-                {isSubmitting ? (
-                  <>
-                    <svg
-                      className="animate-spin h-5 w-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8v8H4z"
-                      ></path>
-                    </svg>
-                    Saving...
-                  </>
-                ) : (
-                  "Save Changes"
-                )}
-              </button>
-
-              <button
-                type="button"
-                onClick={handleReset}
-                disabled={isSubmitting}
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
-              >
-                Reset
-              </button>
-            </div>
-          </form>
+              <div className="flex justify-end gap-4 pt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setName(user?.name || "");
+                    setPreview(
+                      user?.profile_image
+                        ? config.profile_image_path + user.profile_image
+                        : uploadf
+                    );
+                    setImageFile(null);
+                    setShowDeleteConfirm(false);
+                  }}
+                  disabled={isSubmitting}
+                  className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  Reset
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  {isSubmitting ? (
+                    <span className="flex items-center">
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Saving...
+                    </span>
+                  ) : "Save Changes"}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
