@@ -69,8 +69,7 @@ export const profileStore = create((set) => ({
     try {
       const token = localStorage.getItem("access_token");
 
-      const response = await fetch("https://liberty-read-api-production.up.railway.app/api
-        /orders/userOrders", {
+      const response = await fetch("https://liberty-read-api-production.up.railway.app/api/orders/userOrders", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
