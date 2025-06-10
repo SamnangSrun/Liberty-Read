@@ -87,7 +87,7 @@ export function NavbarComponents() {
       setCartItemsCount(items.reduce((total, item) => total + (item.quantity || 0), 0));
     } catch (error) {
       console.error('Error fetching cart items:', error);
-      
+      console.error('Failed to load cart items');
     } finally {
       setCartLoading(false);
     }
