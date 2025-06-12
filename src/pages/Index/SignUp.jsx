@@ -128,7 +128,7 @@ const SignUp = () => {
 
         <p className="text-center text-gray-600 text-sm mt-6">
           Already have an account?{" "}
-          <NavLink to="/sign-in" className="hover:underline font-medium">Sign in</NavLink>
+          <NavLink to="/signin" className="hover:underline font-medium">Sign in</NavLink>
         </p>
       </div>
     </div>
