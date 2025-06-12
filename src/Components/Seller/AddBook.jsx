@@ -1,135 +1,96 @@
 import React, { useState, useEffect } from 'react';
-import uploadf from '../../Img/Admin/upload.png';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { request } from '../../utils/request';
-import { config } from '../../utils/config';
 import { useNavigate } from 'react-router-dom';
 
 const AddBookForm = () => {
-    const navigate = useNavigate();
-    const [image, setImage] = useState(null);
-    const [imageFile, setImageFile] = useState(null);
-    const [formData, setFormData] = useState({
-        name: '',
-        author: '',
-        description: '', // Changed from 'details' to match backend
-        category_name: '',
-        price: '',
-        stock: '' // Added stock field with default value 10
-    });
-    const [categories, setCategories] = useState([]);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const navigate = useNavigate();
+  const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    author: '',
+    description: '',
+    category_name: '',
+    price: '',
+    stock: ''
+  });
+  const [categories, setCategories] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await fetch(`${config.base_url_api}categories`);
-                if (!response.ok) throw new Error('Failed to fetch categories');
-                const data = await response.json();
-                setCategories(data.categories || data.data || data); // adjust based on your API response
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-                toast.error('Failed to load categories. Please try again later.');
-            } finally {
-                setIsLoadingCategories(false);
-            }
-        };
+  // ... keep your existing useEffect and other functions ...
 
-        fetchCategories();
-    }, []);
+  const uploadToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
+    formData.append('folder', 'cover_books');
 
-    const handleImageUpload = (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-        if (!validTypes.includes(file.type)) {
-            toast.error('Please upload a valid image (JPEG, PNG, GIF)');
-            return;
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: 'POST',
+          body: formData,
         }
+      );
 
-        if (file.size > 2 * 1024 * 1024) {
-            toast.error('Image size should be less than 2MB');
-            return;
-        }
+      if (!response.ok) {
+        throw new Error('Failed to upload image to Cloudinary');
+      }
 
-        setImageFile(file);
-        const reader = new FileReader();
-        reader.onloadend = () => setImage(reader.result);
-        reader.readAsDataURL(file);
-    };
+      return await response.json();
+    } catch (error) {
+      console.error('Cloudinary upload error:', error);
+      throw error;
+    }
+  };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    try {
+      // Validate form data
+      if (!formData.name || !formData.author || !formData.category_name || 
+          !formData.price || !formData.stock) {
+        throw new Error('Please fill in all required fields');
+      }
 
-        if (!formData.name || !formData.author || !formData.category_name || !formData.price || !formData.stock) {
-            toast.error('Please fill in all required fields');
-            return;
-        }
+      let cloudinaryResponse = null;
+      if (imageFile) {
+        cloudinaryResponse = await uploadToCloudinary(imageFile);
+      }
 
-        if (isNaN(formData.price) || parseFloat(formData.price) <= 0) {
-            toast.error('Please enter a valid price');
-            return;
-        }
+      // Prepare book data
+      const bookData = {
+        name: formData.name,
+        author: formData.author,
+        description: formData.description,
+        category_name: formData.category_name,
+        price: parseFloat(formData.price),
+        stock: parseInt(formData.stock),
+      };
 
-        if (isNaN(formData.stock) || parseInt(formData.stock) < 0) {
-            toast.error('Please enter a valid stock quantity');
-            return;
-        }
+      // Add Cloudinary data if available
+      if (cloudinaryResponse) {
+        bookData.cover_image = cloudinaryResponse.secure_url;
+        bookData.cover_public_id = cloudinaryResponse.public_id;
+      }
 
-        setIsSubmitting(true);
+      // Send to backend
+      const response = await request('books', 'post', bookData);
 
-        try {
-            const data = new FormData();
-            data.append('name', formData.name);
-            data.append('author', formData.author);
-            data.append('description', formData.description);
-            data.append('category_name', formData.category_name);
-            data.append('price', formData.price);
-            data.append('stock', formData.stock);
-            
-            if (imageFile) {
-                data.append('cover_image', imageFile);
-            }
-
-            // For debugging - log FormData contents
-            for (let [key, value] of data.entries()) {
-                console.log(key, value);
-            }
-
-            const response = await request('books', 'post', data);
-            console.log('API response:', response);
-
-            toast.success('Book added successfully!');
-            setFormData({
-                name: '',
-                author: '',
-                description: '',
-                category_name: '',
-                price: '',
-                stock: ''
-            });
-            setImage(null);
-            setImageFile(null);
-            setTimeout(() => navigate('/seller/book-management'), 1500);
-        } catch (error) {
-            console.error('Error adding book:', error);
-            toast.error(error.response?.data?.message || 'Failed to add book');
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
+      toast.success('Book added successfully!');
+      setTimeout(() => navigate('/seller/book-management'), 1500);
+    } catch (error) {
+      console.error('Error adding book:', error);
+      toast.error(error.message || 'Failed to add book');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
     return (
         <div className="container mx-auto px-4 py-8">
             <ToastContainer position="top-right" autoClose={3000} />
