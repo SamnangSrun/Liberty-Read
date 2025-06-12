@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import uploadf from "../../Img/Admin/upload.png";
 import { request } from "../../utils/request";
 import { profileStore } from "../../store/Pfile_store";
-import { config } from "../../utils/config";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -19,23 +18,21 @@ const EditProfileForm = () => {
     if (user) {
       setName(user.name || "");
       setEmail(user.email || "");
-      setPreview(
-        user.profile_image 
-          ? config.profile_image_path + user.profile_image 
-          : null
-      );
+      setPreview(user.profile_image || uploadf);
     }
   }, [user]);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
+      // Validate file type
       const validTypes = ["image/jpeg", "image/png", "image/gif"];
       if (!validTypes.includes(file.type)) {
         toast.error("Please upload a valid image (JPEG, PNG, GIF)");
         return;
       }
       
+      // Validate file size (max 2MB)
       if (file.size > 2 * 1024 * 1024) {
         toast.error("Image size should be less than 2MB");
         return;
@@ -57,18 +54,13 @@ const EditProfileForm = () => {
 
     setIsSubmitting(true);
     try {
-      const response = await request(`users/${user.id}/remove-profile-image`, "delete");
+      const response = await request(`users/${user.id}/remove-profile-image`, "DELETE");
       
-      if (response?.data?.user) {
-        funSetUser(response.data.user);
+      if (response?.data?.user || response?.user) {
+        const updatedUser = response?.data?.user || response?.user;
+        funSetUser(updatedUser);
         funSetProfileImage(null);
-        setPreview(null);
-        setImageFile(null);
-        toast.success("Profile image removed successfully");
-      } else if (response?.user) {
-        funSetUser(response.user);
-        funSetProfileImage(null);
-        setPreview(null);
+        setPreview(uploadf);
         setImageFile(null);
         toast.success("Profile image removed successfully");
       } else {
@@ -77,8 +69,9 @@ const EditProfileForm = () => {
     } catch (error) {
       console.error("Delete failed:", error);
       toast.error(
-        "Delete failed: " +
-          (error.response?.data?.message || error.message || "Unknown error")
+        error.response?.data?.message || 
+        error.message || 
+        "Failed to delete profile image"
       );
     } finally {
       setIsSubmitting(false);
@@ -116,7 +109,11 @@ const EditProfileForm = () => {
 
       formData.append("_method", "PUT");
 
-      const response = await request(`users/${user.id}`, "post", formData);
+      const response = await request(`users/${user.id}`, "POST", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
 
       const updatedUser = response?.data?.user || response?.user;
       if (updatedUser) {
@@ -125,20 +122,16 @@ const EditProfileForm = () => {
         funSetProfileImage(updatedUser.profile_image || null);
         setImageFile(null);
         setShowDeleteConfirm(false);
-        
-        setPreview(
-          updatedUser.profile_image 
-            ? config.profile_image_path + updatedUser.profile_image 
-            : null
-        );
+        setPreview(updatedUser.profile_image || uploadf);
       } else {
         throw new Error("Invalid response format from server");
       }
     } catch (error) {
       console.error("Update failed:", error);
       toast.error(
-        "Update failed: " +
-          (error.response?.data?.message || error.message || "Unknown error")
+        error.response?.data?.message || 
+        error.message || 
+        "Failed to update profile"
       );
     } finally {
       setIsSubmitting(false);
@@ -159,9 +152,12 @@ const EditProfileForm = () => {
             <div className="relative group">
               <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-gray-200 shadow-md">
                 <img
-                  src={preview || uploadf}
+                  src={preview}
                   alt="Profile"
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.src = uploadf;
+                  }}
                 />
               </div>
               
@@ -265,11 +261,7 @@ const EditProfileForm = () => {
                   type="button"
                   onClick={() => {
                     setName(user?.name || "");
-                    setPreview(
-                      user?.profile_image
-                        ? config.profile_image_path + user.profile_image
-                        : uploadf
-                    );
+                    setPreview(user?.profile_image || uploadf);
                     setImageFile(null);
                     setShowDeleteConfirm(false);
                   }}
