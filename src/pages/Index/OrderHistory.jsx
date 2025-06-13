@@ -362,7 +362,7 @@ const UserOrderList = () => {
                     </div>
 
                     {/* Order Actions */}
-                    <div className="px-6 py-4 flex justify-end space-x-3">
+                    {/* <div className="px-6 py-4 flex justify-end space-x-3">
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -379,7 +379,7 @@ const UserOrderList = () => {
                           Complete Payment
                         </motion.button>
                       )}
-                    </div>
+                    </div> */}
                   </motion.div>
                 )}
               </AnimatePresence>

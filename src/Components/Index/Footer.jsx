@@ -102,7 +102,7 @@ const FooterComponents = () => {
 
         {/* Copyright */}
         <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 text-center mt-6 sm:mt-8">
-          © {new Date().getFullYear()} Copyright Liberty Library
+          © {new Date().getFullYear()} Copyright Liberty Reads
         </p>
       </div>
     </footer>
