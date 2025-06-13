@@ -21,7 +21,7 @@ const Fitness = ({ showAll, setShowAll }) => {
       .then((data) => {
         const animeBooks = data.books.filter(
           (book) =>
-            book.category?.name?.toLowerCase() === "Novel" &&
+            book.category?.name?.toLowerCase() === "Khmer legend" &&
             book.status === "approved"
         );
         setBooks(animeBooks);
