@@ -48,7 +48,6 @@ const Fitness = ({ showAll, setShowAll }) => {
       });
   }, []);
 
-  // Fetch categories
   useEffect(() => {
     if (isAuthenticated) {
       fetch(`${config.base_url_api}categories`)
@@ -61,7 +60,6 @@ const Fitness = ({ showAll, setShowAll }) => {
         .catch((err) => {
           console.error("Error fetching categories:", err);
           toast.error("Failed to load categories");
-          // Fallback to categories from books
           const uniqueCategories = [
             ...new Set(books.map((book) => book.category?.name).filter(Boolean)),
           ].map((name, index) => ({ id: index + 1, name }));
@@ -72,15 +70,12 @@ const Fitness = ({ showAll, setShowAll }) => {
     }
   }, [isAuthenticated, books]);
 
-  // Filter books based on search and category
+  // ✅ Filter books based only on name + optional category
   useEffect(() => {
     let filtered = books.filter(
       (book) =>
-        (book.name.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-        book.author.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-        (book.category?.name && book.category.name.toLowerCase().startsWith(searchQuery.toLowerCase()))
-      ) &&
-      (selectedCategory === "" || book.category?.name === selectedCategory)
+        book.name.toLowerCase().startsWith(searchQuery.toLowerCase()) &&
+        (selectedCategory === "" || book.category?.name === selectedCategory)
     );
     setFilteredBooks(filtered);
   }, [searchQuery, selectedCategory, books]);
@@ -144,7 +139,7 @@ const Fitness = ({ showAll, setShowAll }) => {
 
   return (
     <div>
-      <BannerBookComponents/>
+      <BannerBookComponents />
       <div className="container mx-auto p-4">
         <ToastContainer position="top-right" autoClose={5000} />
         <div className="flex flex-row sm:flex-row justify-between items-center gap-4 mb-6 max-w-3xl mx-auto mt-4">
@@ -153,7 +148,7 @@ const Fitness = ({ showAll, setShowAll }) => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search ..."
+              placeholder="Search by book name..."
               className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <button
