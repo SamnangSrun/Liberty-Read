@@ -1,28 +1,14 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { profileStore } from '../../store/Pfile_store'; 
+
 const PropsCardComponents = ({
+  
   imageSrc,
   title,
   director,
   genre,
   price,
   onAddToCart,
-  isAdding,
+  isAdding
 }) => {
-  const navigate = useNavigate();
-  const access_token = profileStore((state) => state.access_token); 
-
-  const handleAddToCart = () => {
-    if (!access_token || access_token === 'null') {
-      
-      navigate('/signin');
-    } else {
-      
-      onAddToCart();
-    }
-  };
-
   return (
     <div className="block rounded-lg p-1 sm:p-2 md:p-3 lg:p-4 shadow-sm shadow-indigo-100 hover:shadow-md transition-shadow duration-300 text-[10px] sm:text-xs md:text-sm lg:text-base">
       <img
@@ -36,7 +22,7 @@ const PropsCardComponents = ({
           <h2 className="font-medium text-[10px] sm:text-xs md:text-sm lg:text-lg line-clamp-1">{title}</h2>
           <div className="flex justify-between mt-1 sm:mt-2">
             <div className="text-start">
-              <p className="text-[9px] sm:text-xs text-gray-600">{director}</p>
+              <p className="text-[9px] sm:text-xs text-gray-600"> {director}</p>
               <p className="text-[8px] sm:text-xs text-gray-500">{genre}</p>
             </div>
             <div className="text-end">
@@ -48,13 +34,13 @@ const PropsCardComponents = ({
 
       <div className="mt-1 sm:mt-2 md:mt-4">
         <button
-          onClick={handleAddToCart}
+          onClick={onAddToCart}
           disabled={isAdding}
           className={`w-full px-1 py-1 sm:px-2 sm:py-1 md:px-4 md:py-2 rounded border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#102249] focus:ring-opacity-50
             ${isAdding
               ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'text-black hover:text-white border-black hover:bg-[#102249]'}
-          `}
+              : 'text-black hover:text-white border-black hover:bg-[#102249]'
+            }`}
         >
           {isAdding ? 'Adding...' : 'Add to Cart'}
         </button>
