@@ -101,10 +101,25 @@ const AdminOrdersView = () => {
   const getStatusBadge = (status) => STATUS_CLASSES[status?.toLowerCase()] || 'bg-gray-100 text-gray-800';
   const getPaymentBadge = (status) => PAYMENT_CLASSES[status?.toLowerCase()] || 'bg-gray-100 text-gray-800';
 
-  const getCoverImageUrl = (coverPath) => {
-    if (!coverPath) return null;
-    if (coverPath.startsWith('http')) return coverPath;
-    return `${config.book_image_path}${coverPath}`;
+  const getCoverImageUrl = (bookImage) => {
+    if (!bookImage) return null;
+    
+    // Handle Cloudinary object format
+    if (typeof bookImage === 'object' && bookImage.url) {
+      return bookImage.url;
+    }
+    
+    // Handle direct URL string
+    if (typeof bookImage === 'string' && bookImage.startsWith('http')) {
+      return bookImage;
+    }
+    
+    // Handle relative path
+    if (typeof bookImage === 'string') {
+      return `${config.book_image_path}${bookImage}`;
+    }
+    
+    return null;
   };
 
   const handleFilterChange = (e) => {
@@ -463,14 +478,19 @@ const AdminOrdersView = () => {
                 <h4 className="text-sm font-medium text-gray-500 mb-3">Items</h4>
                 <div className="space-y-3">
                   {(order.items || []).map((item, index) => {
-                    const coverUrl = getCoverImageUrl(item.cover_image);
+                    const coverUrl = getCoverImageUrl(item.book_image);
+                    const fallbackColor = `#${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')}`;
+                    
                     return (
                       <div
                         key={`${order.uniqueKey}-${index}`}
                         className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                       >
                         <div className="flex items-center">
-                          <div className="h-20 w-16 overflow-hidden flex items-center justify-center mr-3 rounded-sm">
+                          <div 
+                            className="h-20 w-16 overflow-hidden flex items-center justify-center mr-3 rounded-sm"
+                            style={{ backgroundColor: !coverUrl ? fallbackColor : 'transparent' }}
+                          >
                             {coverUrl ? (
                               <img
                                 src={coverUrl}
@@ -479,12 +499,12 @@ const AdminOrdersView = () => {
                                 onError={(e) => {
                                   e.target.onerror = null;
                                   e.target.src = '';
-                                  e.target.parentElement.classList.add('bg-gray-200');
+                                  e.target.parentElement.style.backgroundColor = fallbackColor;
                                 }}
                               />
                             ) : (
-                              <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                                <FiImage className="text-gray-400 text-xl" />
+                              <div className="w-full h-full flex items-center justify-center">
+                                <FiImage className="text-white text-xl" />
                               </div>
                             )}
                           </div>
